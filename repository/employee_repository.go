@@ -2,6 +2,8 @@ package repository
 
 import (
 	"context"
+	"fmt"
+	"log"
 	"main/models"
 
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -36,6 +38,28 @@ func (r *EmployeeRepository) CreateEmployee(ctx context.Context, employee models
 
 	return err
 }
+
 //getAll tables (select *from employees_data)
 
-//func (r*EmployeeRepository) GetEmployeeData()
+func (r *EmployeeRepository) GetEmployeeData() ([]models.Employee, error) {
+	query := "SELECT id , name,email,department,salary,joining_date,created_at FROM employees_data"
+
+	rows, err := r.DB.Query(context.Background(), query)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close() 
+
+
+	var employees []models.Employee
+
+	for rows.Next() {
+		var employee models.Employee
+
+		rows.Scan(&employee)
+		employees = append(employees, employee)
+	}
+
+	fmt.Println(employees)
+	return employees , nil
+}

@@ -7,4 +7,5 @@ import (
 
 func SetupRoutes(employeeHandler *handler.EmployeeHandler) {
 	http.HandleFunc("/employees", employeeHandler.CreateEmployee)
+	
 }
