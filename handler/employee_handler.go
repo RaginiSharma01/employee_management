@@ -165,6 +165,8 @@ func (h *EmployeeHandler) GetEmployeebyDepartMent(w http.ResponseWriter, r *http
 	writeJSONResponse(w, http.StatusOK, employees)
 }
 
+//handler to manage the get employee from there salary api
+
 func (h *EmployeeHandler) GetEmployeeFromSalary(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
