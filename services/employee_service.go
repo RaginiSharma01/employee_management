@@ -37,9 +37,15 @@ func (s *EmployeeService) GetEmployeeByID(ctx context.Context, id int) (*models.
 }
 
 func (s *EmployeeService) UpdateEmployee(ctx context.Context, employee models.Employee) error {
+	if employee.ID == "" {
+		return errors.New("id required")
+	}
 	return s.Repo.UpdateEmployee(ctx, employee)
 }
 
-func (s *EmployeeService) DeleteEmployee(ctx context.Context, id int) error {
+func (s *EmployeeService) DeleteEmployee(ctx context.Context, id int, employee models.Employee) error {
+	if employee.ID == "" {
+		return errors.New("id required")
+	}
 	return s.Repo.DeleteEmployee(ctx, id)
 }
