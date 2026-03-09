@@ -2,8 +2,6 @@ package repository
 
 import (
 	"context"
-	"fmt"
-	"log"
 	"main/models"
 
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -42,24 +40,90 @@ func (r *EmployeeRepository) CreateEmployee(ctx context.Context, employee models
 //getAll tables (select *from employees_data)
 
 func (r *EmployeeRepository) GetEmployeeData() ([]models.Employee, error) {
-	query := "SELECT id , name,email,department,salary,joining_date,created_at FROM employees_data"
+
+	query := `SELECT id, name, email, department, salary, joining_date, created_at, updated_at FROM employees_data`
 
 	rows, err := r.DB.Query(context.Background(), query)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
-	defer rows.Close() 
-
+	defer rows.Close()
 
 	var employees []models.Employee
 
 	for rows.Next() {
 		var employee models.Employee
 
-		rows.Scan(&employee)
+		err := rows.Scan(
+			&employee.ID,
+			&employee.Name,
+			&employee.Email,
+			&employee.Department,
+			&employee.Salary,
+			&employee.JoiningDate,
+			&employee.CreatedAt,
+			&employee.UpdatedAt,
+		)
+
+		if err != nil {
+			return nil, err
+		}
+
 		employees = append(employees, employee)
 	}
 
-	fmt.Println(employees)
-	return employees , nil
+	return employees, nil
+}
+
+func (r *EmployeeRepository) GetEmployeeByID(ctx context.Context, id int) (*models.Employee, error) {
+
+	query := `SELECT id, name, email, department, salary, joining_date, created_at, updated_at
+			  FROM employees_data WHERE id=$1`
+
+	var employee models.Employee
+
+	err := r.DB.QueryRow(ctx, query, id).Scan(
+		&employee.ID,
+		&employee.Name,
+		&employee.Email,
+		&employee.Department,
+		&employee.Salary,
+		&employee.JoiningDate,
+		&employee.CreatedAt,
+		&employee.UpdatedAt,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &employee, nil
+}
+
+func (r *EmployeeRepository) UpdateEmployee(ctx context.Context, employee models.Employee) error {
+
+	query := `
+	UPDATE employees_data
+	SET name=$1, email=$2, department=$3, salary=$4, updated_at=NOW()
+	WHERE id=$5
+	`
+
+	_, err := r.DB.Exec(ctx, query,
+		employee.Name,
+		employee.Email,
+		employee.Department,
+		employee.Salary,
+		employee.ID,
+	)
+
+	return err
+}
+
+func (r *EmployeeRepository) DeleteEmployee(ctx context.Context, id int) error {
+
+	query := `DELETE FROM employees_data WHERE id=$1`
+
+	_, err := r.DB.Exec(ctx, query, id)
+
+	return err
 }

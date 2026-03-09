@@ -27,3 +27,19 @@ func (s *EmployeeService) CreateEmployee(ctx context.Context, employee models.Em
 
 	return s.Repo.CreateEmployee(ctx, employee)
 }
+
+func (s *EmployeeService) GetEmployees() ([]models.Employee, error) {
+	return s.Repo.GetEmployeeData()
+}
+
+func (s *EmployeeService) GetEmployeeByID(ctx context.Context, id int) (*models.Employee, error) {
+	return s.Repo.GetEmployeeByID(ctx, id)
+}
+
+func (s *EmployeeService) UpdateEmployee(ctx context.Context, employee models.Employee) error {
+	return s.Repo.UpdateEmployee(ctx, employee)
+}
+
+func (s *EmployeeService) DeleteEmployee(ctx context.Context, id int) error {
+	return s.Repo.DeleteEmployee(ctx, id)
+}
