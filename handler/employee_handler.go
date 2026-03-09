@@ -48,10 +48,10 @@ func (h *EmployeeHandler) CreateEmployee(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	if employee.Name == "" || employee.Email == "" {
-		writeJSONError(w, http.StatusBadRequest, "name and email required")
-		return
-	}
+	// if employee.Name == "" || employee.Email == "" {
+	// 	writeJSONError(w, http.StatusBadRequest, "name and email required")
+	// 	return
+	// }
 
 	err = h.Service.CreateEmployee(r.Context(), employee)
 	if err != nil {

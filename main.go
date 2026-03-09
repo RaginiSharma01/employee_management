@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"main/config"
 	"main/db"
@@ -27,7 +26,5 @@ func main() {
 
 	router.SetupRoutes(EmployeeHandler)
 
-	fmt.Println("server is listening on localhost:9001")
-
-	log.Fatal(http.ListenAndServe(":9001", nil))
+	log.Fatal(http.ListenAndServe(cfg.ServerPort, nil))
 }
