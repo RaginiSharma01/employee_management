@@ -43,9 +43,7 @@ func (s *EmployeeService) UpdateEmployee(ctx context.Context, employee models.Em
 	return s.Repo.UpdateEmployee(ctx, employee)
 }
 
-func (s *EmployeeService) DeleteEmployee(ctx context.Context, id int, employee models.Employee) error {
-	if employee.ID == "" {
-		return errors.New("id required")
-	}
+func (s *EmployeeService) DeleteEmployee(ctx context.Context, id int) error {
+
 	return s.Repo.DeleteEmployee(ctx, id)
 }
