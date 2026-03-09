@@ -9,3 +9,23 @@ CREATE TABLE employees_data (
     updated_at TIMESTAMP DEFAULT NOW()
 );
 
+-- selecting all employees 
+SELECT *FROM employees_data;
+
+
+--emlpyee by salary 
+SELECT *FROM employees_data WHERE salary > 50000;
+
+
+-- by depatment 
+SELECT *FROM employees_data WHERE department = "marketing" 
+
+
+-- counting
+SELECT department, COUNT(*) AS employee_count FROM employees_data GROUP by department;
+
+--by joining date
+SELECT *FROM employees_data WHERE joining_date>=NOW() - INTERVAL'30 days'
+
+--top 5 salaray
+SELECT *FROM employees_data ORDER By salary DESC LIMIT -5

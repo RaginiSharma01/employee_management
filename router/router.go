@@ -6,14 +6,10 @@ import (
 )
 
 func SetupRoutes(employeeHandler *handler.EmployeeHandler) {
-
 	http.HandleFunc("/employees", employeeHandler.CreateEmployee)
-
 	http.HandleFunc("/employees/all", employeeHandler.GetEmployees)
-
 	http.HandleFunc("/employees/get", employeeHandler.GetEmployeeByID)
-
 	http.HandleFunc("/employees/update", employeeHandler.UpdateEmployee)
-
 	http.HandleFunc("/employees/delete", employeeHandler.DeleteEmployee)
+	http.HandleFunc("/employees/department", employeeHandler.GetEmployeebyDepartMent)
 }

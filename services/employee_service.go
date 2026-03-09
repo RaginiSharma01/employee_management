@@ -46,3 +46,7 @@ func (s *EmployeeService) UpdateEmployee(ctx context.Context, employee models.Em
 func (s *EmployeeService) DeleteEmployee(ctx context.Context, id int) error {
 	return s.Repo.DeleteEmployee(ctx, id)
 }
+
+func (s *EmployeeService) GetEmployeebyDepartMent(dept string) ([]models.Employee, error) {
+	return s.Repo.GetEmployeebyDepartMent(dept)
+}

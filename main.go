@@ -26,5 +26,8 @@ func main() {
 
 	router.SetupRoutes(EmployeeHandler)
 
-	log.Fatal(http.ListenAndServe(cfg.ServerPort, nil))
+	err = http.ListenAndServe(cfg.ServerPort, nil)
+	if err != nil {
+		return
+	}
 }

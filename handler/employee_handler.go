@@ -48,11 +48,6 @@ func (h *EmployeeHandler) CreateEmployee(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	// if employee.Name == "" || employee.Email == "" {
-	// 	writeJSONError(w, http.StatusBadRequest, "name and email required")
-	// 	return
-	// }
-
 	err = h.Service.CreateEmployee(r.Context(), employee)
 	if err != nil {
 		writeJSONError(w, http.StatusInternalServerError, err.Error())
@@ -146,4 +141,26 @@ func (h *EmployeeHandler) DeleteEmployee(w http.ResponseWriter, r *http.Request)
 	writeJSONResponse(w, http.StatusOK, map[string]string{
 		"message": "employee deleted successfully",
 	})
+}
+
+// employ by department handler
+
+//method ko call check karo
+
+func (h *EmployeeHandler) GetEmployeebyDepartMent(w http.ResponseWriter, r *http.Request) {
+
+	if r.Method != http.MethodGet {
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	dept := r.URL.Query().Get("dept")
+
+	employees, err := h.Service.GetEmployeebyDepartMent(dept)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	writeJSONResponse(w, http.StatusOK, employees)
 }

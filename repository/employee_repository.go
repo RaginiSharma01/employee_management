@@ -127,3 +127,34 @@ func (r *EmployeeRepository) DeleteEmployee(ctx context.Context, id int) error {
 
 	return err
 }
+
+//get employees from department/salaray
+
+func (r *EmployeeRepository) GetEmployeebyDepartMent(dept string) ([]models.Employee, error) {
+	query := `SELECT*FROM employees_data WHERE department =$1`
+	rows, err := r.DB.Query(context.Background(), query, dept)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var employees []models.Employee
+	for rows.Next() {
+		var emp models.Employee
+		err := rows.Scan(
+			&emp.ID,
+			&emp.Name,
+			&emp.Email,
+			&emp.Department,
+			&emp.Salary,
+			&emp.JoiningDate,
+			&emp.CreatedAt,
+			&emp.UpdatedAt,
+		)
+		if err != nil {
+			return nil, err
+		}
+		employees = append(employees, emp)
+	}
+	return employees, nil
+}
