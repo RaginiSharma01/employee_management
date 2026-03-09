@@ -145,7 +145,7 @@ func (h *EmployeeHandler) DeleteEmployee(w http.ResponseWriter, r *http.Request)
 
 // employ by department handler
 
-//method ko call check karo
+//method ko call karke check karo
 
 func (h *EmployeeHandler) GetEmployeebyDepartMent(w http.ResponseWriter, r *http.Request) {
 
