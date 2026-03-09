@@ -158,3 +158,41 @@ func (r *EmployeeRepository) GetEmployeebyDepartMent(dept string) ([]models.Empl
 	}
 	return employees, nil
 }
+
+// call employees based on the salaray
+
+func (r *EmployeeRepository) GetEmployeeFromSalary(amount float64) ([]models.Employee, error) {
+	query := `SELECT id, name, email, department, salary, joining_date, created_at, updated_at
+	FROM employees_data
+	WHERE salary > $1
+	`
+
+	rows, err := r.DB.Query(context.Background(), query, amount)
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	var employees []models.Employee
+
+	for rows.Next() {
+		var emp models.Employee
+		err := rows.Scan(
+			&emp.ID,
+			&emp.Name,
+			&emp.Email,
+			&emp.Department,
+			&emp.Salary,
+			&emp.JoiningDate,
+			&emp.CreatedAt,
+			&emp.UpdatedAt,
+		)
+		if err != nil {
+			return nil, err
+		}
+		employees = append(employees, emp)
+	}
+	return employees, nil
+}

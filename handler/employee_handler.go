@@ -164,3 +164,25 @@ func (h *EmployeeHandler) GetEmployeebyDepartMent(w http.ResponseWriter, r *http
 
 	writeJSONResponse(w, http.StatusOK, employees)
 }
+
+func (h *EmployeeHandler) GetEmployeeFromSalary(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	amountStr := r.URL.Query().Get("amount")
+
+	amount, err := strconv.ParseFloat(amountStr, 64)
+	if err != nil {
+		http.Error(w, "invalid salary", http.StatusBadRequest)
+		return
+	}
+
+	employees, err := h.Service.GetEmployeeFromSalary(amount)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	writeJSONResponse(w, http.StatusOK, employees)
+}

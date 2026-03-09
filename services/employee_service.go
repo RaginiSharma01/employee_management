@@ -50,3 +50,7 @@ func (s *EmployeeService) DeleteEmployee(ctx context.Context, id int) error {
 func (s *EmployeeService) GetEmployeebyDepartMent(dept string) ([]models.Employee, error) {
 	return s.Repo.GetEmployeebyDepartMent(dept)
 }
+
+func (s *EmployeeService) GetEmployeeFromSalary(amount float64) ([]models.Employee, error) {
+	return s.Repo.GetEmployeeFromSalary(amount)
+}

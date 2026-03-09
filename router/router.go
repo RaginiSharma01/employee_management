@@ -12,4 +12,5 @@ func SetupRoutes(employeeHandler *handler.EmployeeHandler) {
 	http.HandleFunc("/employees/update", employeeHandler.UpdateEmployee)
 	http.HandleFunc("/employees/delete", employeeHandler.DeleteEmployee)
 	http.HandleFunc("/employees/department", employeeHandler.GetEmployeebyDepartMent)
+	http.HandleFunc("/employees/salary", employeeHandler.GetEmployeeFromSalary)
 }
