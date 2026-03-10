@@ -38,9 +38,7 @@ LANGUAGE plpgsql
 AS $$
 DECLARE
     names TEXT[] := ARRAY[
-        'Aarav','Riya','Kabir','Ananya','Rohan',
-        'Sneha','Aditya','Meera','Vikram','Pooja',
-        'Rahul','Neha','Arjun','Priya','Karan'
+       'nameesh','john','michael','sarah','emily','david','jessica','daniel','laura','robert'
     ];
 
     departments TEXT[] := ARRAY[
