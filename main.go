@@ -26,10 +26,10 @@ func main() {
 	EmployeeHandler := handler.NewEmployeeHandler(EmployeeService)
 
 	router.SetupRoutes(EmployeeHandler)
-
+	fmt.Println("Server is running on port", cfg.ServerPort)
 	err = http.ListenAndServe(cfg.ServerPort, nil)
 	if err != nil {
-		return
+		fmt.Printf("error in starting server: %v", err)
 	}
-	fmt.Println("Server is running on port", cfg.ServerPort)
+
 }
