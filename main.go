@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"main/config"
 	"main/db"
@@ -30,4 +31,5 @@ func main() {
 	if err != nil {
 		return
 	}
+	fmt.Println("Server is running on port", cfg.ServerPort)
 }

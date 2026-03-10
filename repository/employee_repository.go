@@ -196,3 +196,74 @@ func (r *EmployeeRepository) GetEmployeeFromSalary(amount float64) ([]models.Emp
 	}
 	return employees, nil
 }
+
+func (r *EmployeeRepository) CountEmployeesByDepartment() (map[string]int, error) {
+
+	query := `
+	SELECT department, COUNT(*)
+	FROM employees_data
+	GROUP BY department
+	`
+
+	rows, err := r.DB.Query(context.Background(), query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	result := make(map[string]int)
+
+	for rows.Next() {
+		var dept string
+		var count int
+
+		err := rows.Scan(&dept, &count)
+		if err != nil {
+			return nil, err
+		}
+
+		result[dept] = count
+	}
+
+	return result, nil
+}
+
+func (r *EmployeeRepository) GetRecentEmployees() ([]models.Employee, error) {
+
+	query := `
+	SELECT id, name, email, department, salary, joining_date, created_at, updated_at
+	FROM employees_data
+	WHERE joining_date >= NOW() - INTERVAL '30 days'
+	`
+
+	rows, err := r.DB.Query(context.Background(), query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var employees []models.Employee
+
+	for rows.Next() {
+		var emp models.Employee
+
+		err := rows.Scan(
+			&emp.ID,
+			&emp.Name,
+			&emp.Email,
+			&emp.Department,
+			&emp.Salary,
+			&emp.JoiningDate,
+			&emp.CreatedAt,
+			&emp.UpdatedAt,
+		)
+
+		if err != nil {
+			return nil, err
+		}
+
+		employees = append(employees, emp)
+	}
+
+	return employees, nil
+}

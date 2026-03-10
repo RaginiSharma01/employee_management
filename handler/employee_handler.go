@@ -188,3 +188,35 @@ func (h *EmployeeHandler) GetEmployeeFromSalary(w http.ResponseWriter, r *http.R
 	}
 	writeJSONResponse(w, http.StatusOK, employees)
 }
+
+func (h *EmployeeHandler) CountEmployeesByDepartment(w http.ResponseWriter, r *http.Request) {
+
+	if r.Method != http.MethodGet {
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	result, err := h.Service.CountEmployeesByDepartment()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	writeJSONResponse(w, http.StatusOK, result)
+}
+
+func (h *EmployeeHandler) GetRecentEmployees(w http.ResponseWriter, r *http.Request) {
+
+	if r.Method != http.MethodGet {
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	employees, err := h.Service.GetRecentEmployees()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	writeJSONResponse(w, http.StatusOK, employees)
+}
