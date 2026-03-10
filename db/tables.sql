@@ -13,11 +13,11 @@ CREATE TABLE employees_data (
 SELECT *FROM employees_data;
 
 
---emlpyee by salary 
+--employee by salary 
 SELECT *FROM employees_data WHERE salary > 50000;
 
 
--- by depatment 
+-- by department 
 SELECT *FROM employees_data WHERE department = "marketing" 
 
 
@@ -27,5 +27,50 @@ SELECT department, COUNT(*) AS employee_count FROM employees_data GROUP by depar
 --by joining date
 SELECT *FROM employees_data WHERE joining_date>=NOW() - INTERVAL'30 days'
 
---top 5 salaray
-SELECT *FROM employees_data ORDER By salary DESC LIMIT -5
+--top 5 salary
+SELECT *FROM employees_data ORDER By salary DESC LIMIT 5
+
+-- random 10 user adding 
+
+CREATE OR REPLACE FUNCTION add_random_employees()
+RETURNS void
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    names TEXT[] := ARRAY[
+        'Aarav','Riya','Kabir','Ananya','Rohan',
+        'Sneha','Aditya','Meera','Vikram','Pooja',
+        'Rahul','Neha','Arjun','Priya','Karan'
+    ];
+
+    departments TEXT[] := ARRAY[
+        'Engineering','Finance','HR','Marketing','Sales'
+    ];
+
+    i INT;
+    random_name TEXT;
+    random_dept TEXT;
+    random_salary INT;
+BEGIN
+    FOR i IN 1..10 LOOP
+
+        random_name := names[floor(random()*array_length(names,1) + 1)];
+        random_dept := departments[floor(random()*array_length(departments,1) + 1)];
+        random_salary := floor(random()*70000 + 30000);
+
+        INSERT INTO employees_data
+        (name, email, department, salary, joining_date, created_at, updated_at)
+        VALUES
+        (
+            random_name,
+            lower(random_name) || i || '@gmail.com',
+            random_dept,
+            random_salary,
+            CURRENT_DATE - (random()*30)::INT,
+            NOW(),
+            NOW()
+        );
+
+    END LOOP;
+END;
+$$;

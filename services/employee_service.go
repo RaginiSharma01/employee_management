@@ -61,3 +61,7 @@ func (s *EmployeeService) CountEmployeesByDepartment() (map[string]int, error) {
 func (s *EmployeeService) GetRecentEmployees() ([]models.Employee, error) {
 	return s.Repo.GetRecentEmployees()
 }
+
+func (s *EmployeeService) GetTopPaidEmployees() ([]models.Employee, error) {
+	return s.Repo.GetTopPaidEmployees()
+}

@@ -220,3 +220,19 @@ func (h *EmployeeHandler) GetRecentEmployees(w http.ResponseWriter, r *http.Requ
 
 	writeJSONResponse(w, http.StatusOK, employees)
 }
+
+func (h *EmployeeHandler) GetTopPaidEmployees(w http.ResponseWriter, r *http.Request) {
+
+	if r.Method != http.MethodGet {
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	employees, err := h.Service.GetTopPaidEmployees()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	writeJSONResponse(w, http.StatusOK, employees)
+}

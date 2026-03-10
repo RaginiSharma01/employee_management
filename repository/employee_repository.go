@@ -267,3 +267,46 @@ func (r *EmployeeRepository) GetRecentEmployees() ([]models.Employee, error) {
 
 	return employees, nil
 }
+
+//get top 5 employees;
+
+func (r *EmployeeRepository) GetTopPaidEmployees() ([]models.Employee, error) {
+
+	query := `
+	SELECT id, name, email, department, salary, joining_date, created_at, updated_at
+	FROM employees_data
+	ORDER BY salary DESC
+	LIMIT 5
+	`
+
+	rows, err := r.DB.Query(context.Background(), query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var employees []models.Employee
+
+	for rows.Next() {
+		var emp models.Employee
+
+		err := rows.Scan(
+			&emp.ID,
+			&emp.Name,
+			&emp.Email,
+			&emp.Department,
+			&emp.Salary,
+			&emp.JoiningDate,
+			&emp.CreatedAt,
+			&emp.UpdatedAt,
+		)
+
+		if err != nil {
+			return nil, err
+		}
+
+		employees = append(employees, emp)
+	}
+
+	return employees, nil
+}
