@@ -3,8 +3,10 @@ package services
 import (
 	"context"
 	"errors"
+	"fmt"
 	"main/models"
 	"main/repository"
+	"strings"
 )
 
 type EmployeeService struct {
@@ -23,6 +25,12 @@ func (s *EmployeeService) CreateEmployee(ctx context.Context, employee models.Em
 	}
 	if employee.Email == "" {
 		return errors.New("email is required")
+	}
+
+	if employee.Email != strings.ToLower(employee.Email) {
+		fmt.Println("Error: Email must be in lowercase.")
+	} else {
+		fmt.Println("Email is valid lowercase.")
 	}
 
 	return s.Repo.CreateEmployee(ctx, employee)
