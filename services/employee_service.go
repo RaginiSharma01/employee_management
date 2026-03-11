@@ -59,7 +59,7 @@ func (s *EmployeeService) GetEmployeebyDepartMent(dept string) ([]models.Employe
 	return s.Repo.GetEmployeebyDepartMent(dept)
 }
 
-func (s *EmployeeService) GetEmployeeFromSalary(amount float64) ([]models.EmployeeSalaryResponse, error) {
+func (s *EmployeeService) GetEmployeeFromSalary(amount float64) ([]models.Employee, error) {
 	return s.Repo.GetEmployeeFromSalary(amount)
 }
 

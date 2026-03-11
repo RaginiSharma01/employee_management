@@ -161,7 +161,7 @@ func (r *EmployeeRepository) GetEmployeebyDepartMent(dept string) ([]models.Empl
 
 // call employees based on the salaray
 
-func (r *EmployeeRepository) GetEmployeeFromSalary(amount float64) ([]models.EmployeeSalaryResponse, error) {
+func (r *EmployeeRepository) GetEmployeeFromSalary(amount float64) ([]models.Employee, error) {
 	query := `SELECT id, name, email, department, salary
 	FROM employees_data
 	WHERE salary >= $1
@@ -175,10 +175,10 @@ func (r *EmployeeRepository) GetEmployeeFromSalary(amount float64) ([]models.Emp
 
 	defer rows.Close()
 
-	var employees []models.EmployeeSalaryResponse
+	var employees []models.Employee
 
 	for rows.Next() {
-		var emp models.EmployeeSalaryResponse
+		var emp models.Employee
 		err := rows.Scan(
 			&emp.ID,
 			&emp.Name,
