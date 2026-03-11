@@ -7,6 +7,8 @@ import (
 
 	"main/models"
 	"main/services"
+
+	"github.com/gofiber/fiber/v3/log"
 )
 
 type EmployeeHandler struct {
@@ -130,10 +132,9 @@ func (h *EmployeeHandler) DeleteEmployee(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	id, _ := strconv.Atoi(idStr)
-
-	err := h.Service.DeleteEmployee(r.Context(), id)
+	err := h.Service.DeleteEmployee(r.Context(), idStr)
 	if err != nil {
+		log.Errorf("db error", err.Error())
 		writeJSONError(w, http.StatusInternalServerError, err.Error())
 		return
 	}

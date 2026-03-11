@@ -119,7 +119,7 @@ func (r *EmployeeRepository) UpdateEmployee(ctx context.Context, employee models
 	return err
 }
 
-func (r *EmployeeRepository) DeleteEmployee(ctx context.Context, id int) error {
+func (r *EmployeeRepository) DeleteEmployee(ctx context.Context, id string) error {
 
 	query := `DELETE FROM employees_data WHERE id=$1`
 
@@ -161,10 +161,10 @@ func (r *EmployeeRepository) GetEmployeebyDepartMent(dept string) ([]models.Empl
 
 // call employees based on the salaray
 
-func (r *EmployeeRepository) GetEmployeeFromSalary(amount float64) ([]models.Employee, error) {
-	query := `SELECT id, name, email, department, salary, joining_date, created_at, updated_at
+func (r *EmployeeRepository) GetEmployeeFromSalary(amount float64) ([]models.EmployeeSalaryResponse, error) {
+	query := `SELECT id, name, email, department, salary
 	FROM employees_data
-	WHERE salary > $1
+	WHERE salary >= $1
 	`
 
 	rows, err := r.DB.Query(context.Background(), query, amount)
@@ -175,19 +175,16 @@ func (r *EmployeeRepository) GetEmployeeFromSalary(amount float64) ([]models.Emp
 
 	defer rows.Close()
 
-	var employees []models.Employee
+	var employees []models.EmployeeSalaryResponse
 
 	for rows.Next() {
-		var emp models.Employee
+		var emp models.EmployeeSalaryResponse
 		err := rows.Scan(
 			&emp.ID,
 			&emp.Name,
 			&emp.Email,
 			&emp.Department,
 			&emp.Salary,
-			&emp.JoiningDate,
-			&emp.CreatedAt,
-			&emp.UpdatedAt,
 		)
 		if err != nil {
 			return nil, err
@@ -233,7 +230,7 @@ func (r *EmployeeRepository) GetRecentEmployees() ([]models.Employee, error) {
 	query := `
 	SELECT id, name, email, department, salary, joining_date, created_at, updated_at
 	FROM employees_data
-	WHERE joining_date >= NOW() - INTERVAL '30 days'
+	WHERE joining_date >= NOW() - INTERVAL '2 days'
 	`
 
 	rows, err := r.DB.Query(context.Background(), query)

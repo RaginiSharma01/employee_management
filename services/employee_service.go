@@ -51,7 +51,7 @@ func (s *EmployeeService) UpdateEmployee(ctx context.Context, employee models.Em
 	return s.Repo.UpdateEmployee(ctx, employee)
 }
 
-func (s *EmployeeService) DeleteEmployee(ctx context.Context, id int) error {
+func (s *EmployeeService) DeleteEmployee(ctx context.Context, id string) error {
 	return s.Repo.DeleteEmployee(ctx, id)
 }
 
@@ -59,7 +59,7 @@ func (s *EmployeeService) GetEmployeebyDepartMent(dept string) ([]models.Employe
 	return s.Repo.GetEmployeebyDepartMent(dept)
 }
 
-func (s *EmployeeService) GetEmployeeFromSalary(amount float64) ([]models.Employee, error) {
+func (s *EmployeeService) GetEmployeeFromSalary(amount float64) ([]models.EmployeeSalaryResponse, error) {
 	return s.Repo.GetEmployeeFromSalary(amount)
 }
 

@@ -25,7 +25,7 @@ SELECT *FROM employees_data WHERE department = "marketing"
 SELECT department, COUNT(*) AS employee_count FROM employees_data GROUP by department;
 
 --by joining date
-SELECT *FROM employees_data WHERE joining_date>=NOW() - INTERVAL'30 days'
+SELECT *FROM employees_data WHERE joining_date>=NOW() - INTERVAL'1-day'
 
 --top 5 salary
 SELECT *FROM employees_data ORDER By salary DESC LIMIT 5

@@ -5,6 +5,7 @@ import (
 	"net/http"
 )
 
+// group employees
 func SetupRoutes(employeeHandler *handler.EmployeeHandler) {
 	http.HandleFunc("/employees", employeeHandler.CreateEmployee)
 	http.HandleFunc("/employees/all", employeeHandler.GetEmployees)
@@ -17,4 +18,3 @@ func SetupRoutes(employeeHandler *handler.EmployeeHandler) {
 	http.HandleFunc("/employees/recent", employeeHandler.GetRecentEmployees)
 	http.HandleFunc("/employees/topSalary", employeeHandler.GetTopPaidEmployees)
 }
-
