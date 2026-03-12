@@ -33,10 +33,9 @@ func (s *EmployeeService) CreateEmployee(ctx context.Context, employee models.Em
 	return s.Repo.CreateEmployee(ctx, employee)
 }
 
-func (s *EmployeeService) GetEmployees() ([]models.Employee, error) {
-	return s.Repo.GetEmployeeData()
+func (s *EmployeeService) GetEmployees(ctx context.Context, limit, offset int) ([]models.Employee, error) {
+	return s.Repo.GetEmployeeData(ctx, limit, offset)
 }
-
 func (s *EmployeeService) GetEmployeeByID(ctx context.Context, id int) (*models.Employee, error) {
 	return s.Repo.GetEmployeeByID(ctx, id)
 }

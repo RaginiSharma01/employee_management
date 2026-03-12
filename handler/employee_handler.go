@@ -69,7 +69,21 @@ func (h *EmployeeHandler) GetEmployees(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	employees, err := h.Service.GetEmployees()
+	pageStr := r.URL.Query().Get("page")
+	limitStr := r.URL.Query().Get("limit")
+
+	page, _ := strconv.Atoi(pageStr)
+	limit, _ := strconv.Atoi(limitStr)
+
+	if page <= 0 {
+		page = 1
+	}
+	if limit <= 0 {
+		limit = 10
+	}
+
+	offset := (page - 1) * limit
+	employees, err := h.Service.GetEmployees(r.Context(), limit, offset)
 	if err != nil {
 		writeJSONError(w, http.StatusInternalServerError, err.Error())
 		return

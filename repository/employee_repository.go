@@ -46,11 +46,16 @@ func (r *EmployeeRepository) CreateEmployee(ctx context.Context, employee models
 
 //getAll tables (select *from employees_data)
 
-func (r *EmployeeRepository) GetEmployeeData() ([]models.Employee, error) {
+func (r *EmployeeRepository) GetEmployeeData(ctx context.Context, limit, offset int) ([]models.Employee, error) {
 
-	query := `SELECT id, name, email, department, salary, joining_date, created_at, updated_at FROM employees_data`
+	query := `
+	SELECT id, name, email, department, salary, joining_date
+	FROM employees_data
+	ORDER BY created_at DESC
+	LIMIT $1 OFFSET $2
+	`
 
-	rows, err := r.DB.Query(context.Background(), query)
+	rows, err := r.DB.Query(ctx, query, limit, offset)
 	if err != nil {
 		return nil, err
 	}
@@ -59,24 +64,20 @@ func (r *EmployeeRepository) GetEmployeeData() ([]models.Employee, error) {
 	var employees []models.Employee
 
 	for rows.Next() {
-		var employee models.Employee
-
+		var emp models.Employee
 		err := rows.Scan(
-			&employee.ID,
-			&employee.Name,
-			&employee.Email,
-			&employee.Department,
-			&employee.Salary,
-			&employee.JoiningDate,
-			&employee.CreatedAt,
-			&employee.UpdatedAt,
+			&emp.ID,
+			&emp.Name,
+			&emp.Email,
+			&emp.Department,
+			&emp.Salary,
+			&emp.JoiningDate,
 		)
-
 		if err != nil {
 			return nil, err
 		}
 
-		employees = append(employees, employee)
+		employees = append(employees, emp)
 	}
 
 	return employees, nil
