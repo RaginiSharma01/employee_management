@@ -35,7 +35,8 @@ func (r *EmployeeRepository) CreateEmployee(ctx context.Context, employee models
 		employee.Email,
 		employee.Department,
 		employee.Salary,
-	).Scan(&id)
+		
+	).Scan(&id )
 
 	if err != nil {
 		return "", err

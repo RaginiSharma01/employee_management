@@ -62,6 +62,7 @@ func (s *EmployeeService) GetEmployeeFromSalary(amount float64) ([]models.Employ
 func (s *EmployeeService) CountEmployeesByDepartment() (map[string]int, error) {
 	return s.Repo.CountEmployeesByDepartment()
 }
+
 func (s *EmployeeService) GetRecentEmployees() ([]models.Employee, error) {
 	return s.Repo.GetRecentEmployees()
 }
