@@ -17,24 +17,31 @@ func NewEmployee(pool *pgxpool.Pool) *EmployeeRepository {
 	}
 }
 
-func (r *EmployeeRepository) CreateEmployee(ctx context.Context, employee models.Employee) error {
+func (r *EmployeeRepository) CreateEmployee(ctx context.Context, employee models.Employee) (string, error) {
 
 	query := `
 	INSERT INTO employees_data
 	(name, email, department, salary, joining_date, created_at, updated_at)
 	VALUES ($1,$2,$3,$4,NOW(),NOW(),NOW())
+	RETURNING id
 	`
 
-	_, err := r.DB.Exec(
+	var id string
+
+	err := r.DB.QueryRow(
 		ctx,
 		query,
 		employee.Name,
 		employee.Email,
 		employee.Department,
 		employee.Salary,
-	)
+	).Scan(&id)
 
-	return err
+	if err != nil {
+		return "", err
+	}
+
+	return id, nil
 }
 
 //getAll tables (select *from employees_data)

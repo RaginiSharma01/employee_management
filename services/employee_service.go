@@ -3,7 +3,6 @@ package services
 import (
 	"context"
 	"errors"
-	"fmt"
 	"main/models"
 	"main/repository"
 	"strings"
@@ -19,19 +18,17 @@ func NewEmployeeService(repo *repository.EmployeeRepository) *EmployeeService {
 	}
 }
 
-func (s *EmployeeService) CreateEmployee(ctx context.Context, employee models.Employee) error {
+func (s *EmployeeService) CreateEmployee(ctx context.Context, employee models.Employee) (string, error) {
+
 	if employee.Name == "" {
-		return errors.New("name is required")
-	}
-	if employee.Email == "" {
-		return errors.New("email is required")
+		return "", errors.New("name is required")
 	}
 
-	if employee.Email != strings.ToLower(employee.Email) {
-		fmt.Println("Error: Email must be in lowercase.")
-	} else {
-		fmt.Println("Email is valid lowercase.")
+	if employee.Email == "" {
+		return "", errors.New("email is required")
 	}
+
+	employee.Email = strings.ToLower(employee.Email)
 
 	return s.Repo.CreateEmployee(ctx, employee)
 }

@@ -50,7 +50,7 @@ func (h *EmployeeHandler) CreateEmployee(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	err = h.Service.CreateEmployee(r.Context(), employee)
+	id, err := h.Service.CreateEmployee(r.Context(), employee)
 	if err != nil {
 		writeJSONError(w, http.StatusInternalServerError, err.Error())
 		return
@@ -58,6 +58,7 @@ func (h *EmployeeHandler) CreateEmployee(w http.ResponseWriter, r *http.Request)
 
 	writeJSONResponse(w, http.StatusCreated, map[string]string{
 		"message": "employee created successfully",
+		"id":      id,
 	})
 }
 
@@ -74,9 +75,27 @@ func (h *EmployeeHandler) GetEmployees(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	writeJSONResponse(w, http.StatusOK, employees)
-}
+	var response []models.EmployeeResPonse
 
+	for _, emp := range employees {
+		var joiningDate string
+
+		if emp.JoiningDate != nil {
+			joiningDate = emp.JoiningDate.Format("2006-01-02")
+		}
+
+		response = append(response, models.EmployeeResPonse{
+			ID:          emp.ID,
+			Name:        emp.Name,
+			Email:       emp.Email,
+			Department:  emp.Department,
+			Salary:      emp.Salary,
+			JoiningDate: joiningDate,
+		})
+	}
+
+	writeJSONResponse(w, http.StatusOK, response)
+}
 func (h *EmployeeHandler) GetEmployeeByID(w http.ResponseWriter, r *http.Request) {
 
 	idStr := r.URL.Query().Get("id")
