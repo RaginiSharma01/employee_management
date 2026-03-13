@@ -35,8 +35,7 @@ func (r *EmployeeRepository) CreateEmployee(ctx context.Context, employee models
 		employee.Email,
 		employee.Department,
 		employee.Salary,
-		
-	).Scan(&id )
+	).Scan(&id)
 
 	if err != nil {
 		return "", err
@@ -50,7 +49,7 @@ func (r *EmployeeRepository) CreateEmployee(ctx context.Context, employee models
 func (r *EmployeeRepository) GetEmployeeData(ctx context.Context, limit, offset int) ([]models.Employee, error) {
 
 	query := `
-	SELECT id, name, email, department, salary, joining_date
+	SELECT id, name, email, department, salary, joining_date,created_at,updated_at
 	FROM employees_data
 	ORDER BY created_at DESC
 	LIMIT $1 OFFSET $2
@@ -73,6 +72,8 @@ func (r *EmployeeRepository) GetEmployeeData(ctx context.Context, limit, offset 
 			&emp.Department,
 			&emp.Salary,
 			&emp.JoiningDate,
+			&emp.CreatedAt,
+			&emp.UpdatedAt,
 		)
 		if err != nil {
 			return nil, err
